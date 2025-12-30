@@ -21,8 +21,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
-
-PLATFORMS = [Platform.SENSOR]
 from homeassistant.helpers import config_validation as cv, template
 from homeassistant.helpers.selector import ConfigEntrySelector, ConfigEntrySelectorConfig
 from homeassistant.util.ssl import client_context
@@ -41,6 +39,8 @@ from .const import (
     DOMAIN,
     SERVICE_SEND_MESSAGE,
 )
+
+PLATFORMS = [Platform.SENSOR]
 
 CONF_CONFIG_ENTRY = "config_entry"
 

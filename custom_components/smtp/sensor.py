@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from homeassistant.components.sensor import (
-    SensorEntity,
-    SensorEntityDescription,
-)
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SENDER, EntityCategory
 from homeassistant.core import HomeAssistant, callback
