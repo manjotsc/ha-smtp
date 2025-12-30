@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  validate:
-    name: Validate with ruff
+  ruff:
+    name: Ruff
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -26,3 +26,26 @@ jobs:
 
       - name: Run ruff
         run: ruff check custom_components/smtp
+
+  hassfest:
+    name: Hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run hassfest
+        uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    name: HACS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: integration
+          ignore: brands
