@@ -15,8 +15,6 @@ The built-in Home Assistant SMTP notification requires manual YAML configuration
 | Feature | Built-in SMTP | This Integration |
 |---------|:-------------:|:----------------:|
 | UI Configuration | - | Yes |
-| Multiple Accounts | - | Yes |
-| Reconfigure Without Restart | - | Yes |
 | Diagnostic Sensors | - | Yes |
 | Service Selector in UI | - | Yes |
 
