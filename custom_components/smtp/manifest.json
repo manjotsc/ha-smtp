@@ -6,5 +6,5 @@
   "documentation": "https://github.com/manjotsc/ha-smtp",
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/manjotsc/ha-smtp/issues",
-  "version": "1.0.0"
+  "version": "1.0.3"
 }
