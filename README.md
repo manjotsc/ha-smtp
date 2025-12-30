@@ -5,7 +5,7 @@
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange?style=for-the-badge)](https://hacs.xyz/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-> **UI-first SMTP integration** — Configure and manage email notifications entirely through the Home Assistant interface. No YAML required.
+> **UI-first SMTP integration** — Configure and manage email notifications entirely through the Home Assistant interface.
 
 ---
 
@@ -16,8 +16,6 @@ The built-in Home Assistant SMTP notification requires manual YAML configuration
 | Feature | Built-in SMTP | This Integration |
 |---------|:-------------:|:----------------:|
 | UI Configuration | - | Yes |
-| Multiple Accounts | - | Yes |
-| Reconfigure Without Restart | - | Yes |
 | Diagnostic Sensors | - | Yes |
 | Service Selector in UI | - | Yes |
 
