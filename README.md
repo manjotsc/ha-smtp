@@ -1,31 +1,52 @@
 # SMTP Integration for Home Assistant
 
-A Home Assistant custom integration for sending email notifications via SMTP with full UI configuration support.
+[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Integration-41BDF5?style=for-the-badge&logo=homeassistant)](https://www.home-assistant.io/)
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange?style=for-the-badge)](https://hacs.xyz/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+> **UI-first SMTP integration** — Configure and manage email notifications entirely through the Home Assistant interface. No YAML required.
+
+---
+
+## Why This Integration?
+
+The built-in Home Assistant SMTP notification requires manual YAML configuration. This integration brings **full UI support** for SMTP setup, making email notifications accessible to everyone:
+
+| Feature | Built-in SMTP | This Integration |
+|---------|:-------------:|:----------------:|
+| UI Configuration | - | Yes |
+| Multiple Accounts | - | Yes |
+| Reconfigure Without Restart | - | Yes |
+| Diagnostic Sensors | - | Yes |
+| Service Selector in UI | - | Yes |
+
+---
 
 ## Features
 
-- **UI-Based Setup**: Configure everything through the Home Assistant interface - no YAML needed
-- **Multiple Accounts**: Add multiple SMTP accounts for different email providers
-- **Template Support**: Use Jinja2 templates in messages to include sensor data
-- **HTML Emails**: Send rich HTML emails with dynamic content
-- **Attachments**: Attach images to your emails
-- **Diagnostic Sensors**: Monitor connection status, errors, and last sent time
+- **Complete UI Configuration** — Set up SMTP accounts through Settings > Devices & Services
+- **Multiple Email Accounts** — Add Gmail, Outlook, Yahoo, and others side by side
+- **Rich Email Support** — Send HTML emails with Jinja2 templates and attachments
+- **Live Diagnostics** — Monitor connection status, errors, and delivery timestamps
+- **No Restart Required** — Add, modify, or remove accounts without restarting HA
 
-## Installation
+---
 
-### HACS (Recommended)
+## Quick Start
 
-1. Open HACS in Home Assistant
-2. Click on "Integrations"
-3. Click the three dots menu → "Custom repositories"
-4. Add this repository URL and select "Integration" as the category
-5. Click "Install"
-6. Restart Home Assistant
+### Installation via HACS
 
-### Manual Installation
+1. Open **HACS** > **Integrations**
+2. Click **⋮** > **Custom repositories**
+3. Add this repository URL as **Integration**
+4. Search for **SMTP** and install
+5. Restart Home Assistant
+
+<details>
+<summary><strong>Manual Installation</strong></summary>
 
 1. Download the `smtp` folder from this repository
-2. Copy it to your `custom_components` directory
+2. Copy to `config/custom_components/`
 3. Restart Home Assistant
 
 ```
@@ -43,86 +64,101 @@ custom_components/
         └── en.json
 ```
 
-## Configuration
+</details>
 
-1. Go to **Settings** → **Devices & Services**
+### Setup
+
+1. Go to **Settings** > **Devices & Services**
 2. Click **+ Add Integration**
-3. Search for "SMTP"
-4. Fill in your email server details:
+3. Search for **SMTP**
+4. Enter your email server details
 
-| Field | Description |
-|-------|-------------|
-| Mail server | SMTP server address (e.g., smtp.gmail.com) |
-| Port | Server port (587 for STARTTLS, 465 for SSL/TLS, 25 for none) |
-| Security | Encryption type: STARTTLS (recommended), SSL/TLS, or None |
-| Login | Your email username |
-| Password | Your email password or app-specific password |
-| From address | Email address to send from |
-| From name | Display name shown in emails (optional) |
-| To address | Default recipient(s), comma-separated |
-| Connection timeout | Seconds to wait for server response |
-| Verify SSL certificate | Keep enabled for security |
-| Enable debug logging | Log SMTP communication for troubleshooting |
+---
 
-### Common SMTP Settings
+## Configuration Options
+
+| Option | Description |
+|--------|-------------|
+| **Mail server** | SMTP server address (e.g., `smtp.gmail.com`) |
+| **Port** | `587` (STARTTLS), `465` (SSL/TLS), or `25` (none) |
+| **Security** | STARTTLS (recommended), SSL/TLS, or None |
+| **Login** | Your email username |
+| **Password** | Email password or app-specific password |
+| **From address** | Sender email address |
+| **From name** | Display name shown to recipients |
+| **To address** | Default recipient(s), comma-separated |
+| **Connection timeout** | Seconds to wait for server response |
+| **Verify SSL** | Certificate validation (keep enabled) |
+| **Debug logging** | Log SMTP traffic for troubleshooting |
+
+<details>
+<summary><strong>Common Provider Settings</strong></summary>
 
 | Provider | Server | Port | Security |
 |----------|--------|------|----------|
-| Gmail | smtp.gmail.com | 587 | STARTTLS |
-| Outlook/Office 365 | smtp.office365.com | 587 | STARTTLS |
-| Yahoo | smtp.mail.yahoo.com | 587 | STARTTLS |
-| iCloud | smtp.mail.me.com | 587 | STARTTLS |
+| Gmail | `smtp.gmail.com` | 587 | STARTTLS |
+| Outlook/365 | `smtp.office365.com` | 587 | STARTTLS |
+| Yahoo | `smtp.mail.yahoo.com` | 587 | STARTTLS |
+| iCloud | `smtp.mail.me.com` | 587 | STARTTLS |
 
-> **Note**: Gmail and other providers require an "App Password" instead of your regular password. Enable 2FA and generate an app password in your account settings.
+> **Note:** Gmail, Outlook, and other providers require an **App Password** when 2FA is enabled. Generate one in your account security settings.
+
+</details>
+
+---
 
 ## Usage
 
-### Service: `smtp.send_message`
+### Sending Emails
 
-Send emails using the `smtp.send_message` service.
+Use the `smtp.send_message` service to send emails from automations, scripts, or the developer tools.
 
-#### Basic Example
+**Basic Example:**
 
 ```yaml
 service: smtp.send_message
 data:
-  config_entry: abc123def456  # Your SMTP config entry ID
+  config_entry: abc123def456
   subject: "Home Assistant Alert"
   message: "Motion detected in the living room!"
 ```
 
-#### With Templates
+**With Templates:**
 
 ```yaml
 service: smtp.send_message
 data:
   config_entry: abc123def456
-  subject: "🏠 Home Assistant Status"
-  message: >
-    Home Assistant is running version
-    {{ state_attr('update.home_assistant_core_update', 'installed_version') }}
+  subject: "Daily Report"
+  message: |
+    Current temperature: {{ states('sensor.temperature') }}°C
+    Humidity: {{ states('sensor.humidity') }}%
 ```
 
-#### HTML Email with Sensor Data
+<details>
+<summary><strong>HTML Email Example</strong></summary>
 
 ```yaml
 service: smtp.send_message
 data:
   config_entry: abc123def456
-  subject: "🏠 Home Assistant Version & Update Status"
-  message: "Plain text fallback for email clients that don't support HTML."
+  subject: "Home Assistant Status"
+  message: "Plain text fallback"
   html: |
     <!doctype html>
     <html>
-      <body style="margin:0;padding:16px;font-family:Arial,sans-serif;">
+      <body style="font-family: Arial, sans-serif; padding: 20px;">
         <h1>Home Assistant Status</h1>
-        <p>Installed: {{ state_attr('update.home_assistant_core_update', 'installed_version') }}</p>
-        <p>Latest: {{ state_attr('update.home_assistant_core_update', 'latest_version') }}</p>
+        <p><strong>Installed:</strong> {{ state_attr('update.home_assistant_core_update', 'installed_version') }}</p>
+        <p><strong>Latest:</strong> {{ state_attr('update.home_assistant_core_update', 'latest_version') }}</p>
       </body>
     </html>
 ```
 
-#### Multiple Recipients
+</details>
+
+<details>
+<summary><strong>Multiple Recipients</strong></summary>
 
 ```yaml
 service: smtp.send_message
@@ -135,7 +171,10 @@ data:
     - "person2@example.com"
 ```
 
-#### With Attachments
+</details>
+
+<details>
+<summary><strong>With Attachments</strong></summary>
 
 ```yaml
 service: smtp.send_message
@@ -147,33 +186,40 @@ data:
     - "/config/www/camera_snapshot.jpg"
 ```
 
-### Service Fields
+</details>
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `config_entry` | Yes | The SMTP account to send from (use dropdown in UI) |
-| `message` | No* | Plain text body. Supports templates. |
-| `subject` | No | Subject line. Supports templates and emojis. |
-| `to` | No | Recipients list. Leave empty for default from setup. |
-| `from_name` | No | Override the "From" display name. |
-| `html` | No* | HTML content. Supports Jinja2 templates. |
-| `images` | No | List of image file paths to attach. |
+### Service Parameters
 
-*Either `message` or `html` should be provided.
+| Parameter | Required | Description |
+|-----------|:--------:|-------------|
+| `config_entry` | Yes | SMTP account to use (selectable in UI) |
+| `message` | * | Plain text body (supports templates) |
+| `subject` | No | Email subject line |
+| `to` | No | Recipients list (defaults to configured address) |
+| `from_name` | No | Override sender display name |
+| `html` | * | HTML content (supports templates) |
+| `images` | No | List of image paths to attach |
+
+*At least one of `message` or `html` should be provided.
+
+---
 
 ## Diagnostic Sensors
 
-Each SMTP account creates three diagnostic sensors:
+Each SMTP account creates diagnostic entities to monitor email delivery:
 
 | Sensor | Description |
 |--------|-------------|
-| Status | Current state: "Connected", "Sending", or "Error" |
-| Last error | Most recent error message, or "None" |
-| Last sent | Timestamp of last successful email |
+| **Status** | `Connected`, `Sending`, or `Error` |
+| **Last Error** | Most recent error message |
+| **Last Sent** | Timestamp of last successful delivery |
+
+---
 
 ## Automation Examples
 
-### Send Daily Report
+<details>
+<summary><strong>Daily Morning Report</strong></summary>
 
 ```yaml
 automation:
@@ -185,13 +231,17 @@ automation:
       - service: smtp.send_message
         data:
           config_entry: abc123def456
-          subject: "🌅 Good Morning Report"
-          message: >
+          subject: "Good Morning Report"
+          message: |
             Temperature: {{ states('sensor.temperature') }}°C
             Humidity: {{ states('sensor.humidity') }}%
+            Weather: {{ states('weather.home') }}
 ```
 
-### Alert on Motion
+</details>
+
+<details>
+<summary><strong>Motion Detection Alert</strong></summary>
 
 ```yaml
 automation:
@@ -204,36 +254,51 @@ automation:
       - service: smtp.send_message
         data:
           config_entry: abc123def456
-          subject: "🚨 Motion Detected!"
-          message: "Motion detected at front door at {{ now().strftime('%H:%M:%S') }}"
+          subject: "Motion Detected!"
+          message: "Motion at front door — {{ now().strftime('%H:%M:%S') }}"
 ```
+
+</details>
+
+---
 
 ## Troubleshooting
 
-### Connection Issues
+<details>
+<summary><strong>Connection Issues</strong></summary>
 
-1. Verify your server address and port
-2. Check if your email provider requires an app password
-3. Try different security settings (STARTTLS vs SSL/TLS)
-4. Enable debug logging to see detailed SMTP communication
+1. Verify server address and port
+2. Check if your provider requires an app password
+3. Try switching between STARTTLS and SSL/TLS
+4. Enable debug logging to inspect SMTP traffic
 
-### Authentication Errors
+</details>
 
-- Gmail: Use an [App Password](https://support.google.com/accounts/answer/185833)
-- Outlook: Use an [App Password](https://support.microsoft.com/en-us/account-billing/using-app-passwords-with-apps-that-don-t-support-two-step-verification-5896ed9b-4263-e681-128a-a6f2979a7944)
-- Check if 2FA is enabled on your account
+<details>
+<summary><strong>Authentication Errors</strong></summary>
 
-### Emails Not Arriving
+- **Gmail:** Generate an [App Password](https://support.google.com/accounts/answer/185833)
+- **Outlook:** Create an [App Password](https://support.microsoft.com/account-billing/using-app-passwords-5896ed9b-4263-e681-128a-a6f2979a7944)
+- Ensure 2FA is enabled before generating app passwords
+
+</details>
+
+<details>
+<summary><strong>Emails Not Arriving</strong></summary>
 
 1. Check spam/junk folder
-2. Verify the recipient address
-3. Check the "Last error" sensor for issues
-4. Review Home Assistant logs for SMTP errors
+2. Verify recipient address
+3. Check the **Last Error** sensor
+4. Review Home Assistant logs
 
-## License
+</details>
 
-This project is licensed under the MIT License.
+---
 
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
