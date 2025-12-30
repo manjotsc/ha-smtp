@@ -37,7 +37,7 @@ The built-in Home Assistant SMTP notification requires manual YAML configuration
 
 1. Open **HACS** > **Integrations**
 2. Click **⋮** > **Custom repositories**
-3. Add this repository URL as **Integration**
+3. Add `https://github.com/manjotsc/ha-smtp` as **Integration**
 4. Search for **SMTP** and install
 5. Restart Home Assistant
 
