@@ -4,7 +4,7 @@
   "codeowners": ["@manjotsc"],
   "config_flow": true,
   "documentation": "https://github.com/manjotsc/ha-smtp",
-  "issue_tracker": "https://github.com/manjotsc/ha-smtp/issues",
   "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/manjotsc/ha-smtp/issues",
   "version": "1.0.0"
 }
