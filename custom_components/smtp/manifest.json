@@ -1,5 +1,5 @@
 {
-  "domain": "smtp",
+  "domain": "smtp_email",
   "name": "SMTP Email",
   "codeowners": ["@manjotsc"],
   "config_flow": true,
