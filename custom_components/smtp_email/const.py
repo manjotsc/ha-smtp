@@ -1,8 +1,8 @@
-"""Constants for the smtp integration."""
+"""Constants for the smtp_email integration."""
 
 from typing import Final
 
-DOMAIN: Final = "smtp"
+DOMAIN: Final = "smtp_email"
 
 ATTR_IMAGES: Final = "images"  # optional embedded image file attachments
 ATTR_HTML: Final = "html"

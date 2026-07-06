@@ -9,6 +9,20 @@
 
 ---
 
+## ⚠️ Breaking Change in v2.0.0
+
+The integration **domain was renamed** from `smtp` to `smtp_email` (to avoid colliding with Home Assistant's built-in `smtp` integration).
+
+**If you are upgrading from v1.x, you must migrate:**
+
+1. Go to **Settings > Devices & Services** and **delete** the old SMTP integration entries.
+2. Delete the old `config/custom_components/smtp/` folder (HACS does not remove it automatically on a rename).
+3. Update via HACS, then **restart Home Assistant**.
+4. Re-add the integration (config entries do **not** carry over across the domain change).
+5. Update your automations/scripts to call `smtp_email.send_message` instead of `smtp_email.send_message`.
+
+---
+
 ## Why This Integration?
 
 The built-in Home Assistant SMTP notification requires manual YAML configuration. This integration brings **full UI support** for SMTP setup, making email notifications accessible to everyone:
@@ -44,13 +58,13 @@ The built-in Home Assistant SMTP notification requires manual YAML configuration
 <details>
 <summary><strong>Manual Installation</strong></summary>
 
-1. Download the `smtp` folder from this repository
+1. Download the `smtp_email` folder from this repository
 2. Copy to `config/custom_components/`
 3. Restart Home Assistant
 
 ```
 custom_components/
-└── smtp/
+└── smtp_email/
     ├── __init__.py
     ├── config_flow.py
     ├── const.py
@@ -110,12 +124,12 @@ custom_components/
 
 ### Sending Emails
 
-Use the `smtp.send_message` service to send emails from automations, scripts, or the developer tools.
+Use the `smtp_email.send_message` service to send emails from automations, scripts, or the developer tools.
 
 **Basic Example:**
 
 ```yaml
-service: smtp.send_message
+service: smtp_email.send_message
 data:
   config_entry: abc123def456
   subject: "Home Assistant Alert"
@@ -125,7 +139,7 @@ data:
 **With Templates:**
 
 ```yaml
-service: smtp.send_message
+service: smtp_email.send_message
 data:
   config_entry: abc123def456
   subject: "Daily Report"
@@ -138,7 +152,7 @@ data:
 <summary><strong>HTML Email Example</strong></summary>
 
 ```yaml
-service: smtp.send_message
+service: smtp_email.send_message
 data:
   config_entry: abc123def456
   subject: "Home Assistant Status"
@@ -160,7 +174,7 @@ data:
 <summary><strong>Multiple Recipients</strong></summary>
 
 ```yaml
-service: smtp.send_message
+service: smtp_email.send_message
 data:
   config_entry: abc123def456
   subject: "Alert"
@@ -176,7 +190,7 @@ data:
 <summary><strong>With Attachments</strong></summary>
 
 ```yaml
-service: smtp.send_message
+service: smtp_email.send_message
 data:
   config_entry: abc123def456
   subject: "Camera Snapshot"
@@ -227,7 +241,7 @@ automation:
       - platform: time
         at: "08:00:00"
     action:
-      - service: smtp.send_message
+      - service: smtp_email.send_message
         data:
           config_entry: abc123def456
           subject: "Good Morning Report"
@@ -250,7 +264,7 @@ automation:
         entity_id: binary_sensor.front_door_motion
         to: "on"
     action:
-      - service: smtp.send_message
+      - service: smtp_email.send_message
         data:
           config_entry: abc123def456
           subject: "Motion Detected!"

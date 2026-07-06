@@ -4,7 +4,7 @@ send_message:
       required: true
       selector:
         config_entry:
-          integration: smtp
+          integration: smtp_email
     message:
       example: "Home Assistant is running version {{ state_attr('update.home_assistant_core_update', 'installed_version') }}"
       selector:
